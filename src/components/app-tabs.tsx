@@ -1,11 +1,13 @@
 import { NativeTabs } from 'expo-router/unstable-native-tabs';
 
+import { colors } from '@/theme';
+
 export default function AppTabs() {
   return (
     <NativeTabs
-      backgroundColor="#0E1223"
-      tintColor="#8B5CFF"
-      indicatorColor="#1A2038"
+      backgroundColor={colors.surface}
+      tintColor={colors.accent}
+      indicatorColor={colors.accentSoft}
       minimizeBehavior="onScrollDown">
       <NativeTabs.Trigger name="index">
         <NativeTabs.Trigger.Label>Home</NativeTabs.Trigger.Label>

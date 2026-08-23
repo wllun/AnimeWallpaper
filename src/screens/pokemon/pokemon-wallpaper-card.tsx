@@ -1,41 +1,41 @@
 import { Image } from 'expo-image';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import type { Wallpaper } from '@/data/wallpapers';
-import { colors, radius, spacing, type } from '@/theme';
+import type { PokemonWallpaper } from '@/data/pokemon';
+import { colors, radius, shadows, spacing, type } from '@/theme';
 
-type WallpaperCardProps = {
-  wallpaper: Wallpaper;
+type PokemonWallpaperCardProps = {
+  wallpaper: PokemonWallpaper;
   width: number;
   isFavorite: boolean;
   onOpen: () => void;
   onToggleFavorite: () => void;
 };
 
-export function WallpaperCard({
+export function PokemonWallpaperCard({
   wallpaper,
   width,
   isFavorite,
   onOpen,
   onToggleFavorite,
-}: WallpaperCardProps) {
+}: PokemonWallpaperCardProps) {
   return (
     <View style={[styles.card, { width }]}>
       <Pressable
-        accessibilityLabel={`Open ${wallpaper.title} wallpaper`}
+        accessibilityLabel={`Open ${wallpaper.title}`}
         accessibilityRole="button"
         onPress={onOpen}
-        style={({ pressed }) => [styles.cardAction, pressed && styles.cardPressed]}>
+        style={({ pressed }) => [styles.cardAction, pressed && styles.pressed]}>
         <Image
           cachePolicy="memory-disk"
           contentFit="cover"
           source={{ uri: wallpaper.imageUrl }}
           style={StyleSheet.absoluteFill}
-          transition={250}
+          transition={220}
         />
-        <View style={styles.imageShade} />
-        <View style={[styles.label, { backgroundColor: wallpaper.accent }]}>
-          <Text numberOfLines={1} style={styles.title}>
+        <View style={styles.scrim} />
+        <View style={[styles.label, { backgroundColor: `${wallpaper.accent}E6` }]}>
+          <Text selectable numberOfLines={1} style={styles.title}>
             {wallpaper.title}
           </Text>
         </View>
@@ -47,7 +47,7 @@ export function WallpaperCard({
         accessibilityRole="button"
         hitSlop={10}
         onPress={onToggleFavorite}
-        style={({ pressed }) => [styles.favorite, pressed && styles.pressed]}>
+        style={({ pressed }) => [styles.favorite, pressed && styles.favoritePressed]}>
         <Text style={styles.heart}>{isFavorite ? '♥' : '♡'}</Text>
       </Pressable>
     </View>
@@ -56,31 +56,29 @@ export function WallpaperCard({
 
 const styles = StyleSheet.create({
   card: {
-    aspectRatio: 0.62,
+    aspectRatio: 0.6,
     overflow: 'hidden',
     borderRadius: radius.lg,
     borderCurve: 'continuous',
     backgroundColor: colors.surfaceRaised,
+    boxShadow: shadows.card,
   },
   cardAction: { flex: 1 },
-  cardPressed: { opacity: 0.86 },
-  imageShade: {
-    ...StyleSheet.absoluteFill,
-    backgroundColor: colors.blackOverlay,
-  },
+  pressed: { opacity: 0.84, transform: [{ scale: 0.98 }] },
+  scrim: { ...StyleSheet.absoluteFill, backgroundColor: colors.blackOverlay },
   favorite: {
     position: 'absolute',
     top: spacing.md,
     right: spacing.md,
     width: 44,
     height: 44,
-    borderRadius: 22,
     alignItems: 'center',
     justifyContent: 'center',
+    borderRadius: radius.full,
     backgroundColor: colors.overlay,
   },
-  pressed: { transform: [{ scale: 0.92 }] },
-  heart: { color: colors.text, fontSize: 26, lineHeight: 30 },
+  favoritePressed: { transform: [{ scale: 0.9 }] },
+  heart: { color: colors.text, fontSize: 26 },
   label: {
     position: 'absolute',
     right: 0,
@@ -90,5 +88,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: spacing.md,
   },
-  title: { ...type.subhead, color: colors.text, fontSize: 15, fontWeight: '800', textAlign: 'center' },
+  title: { ...type.headline, textAlign: 'center' },
 });

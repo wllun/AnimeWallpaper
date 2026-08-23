@@ -12,6 +12,7 @@ import {
 
 import { categories, wallpapers } from '@/data/wallpapers';
 import { WallpaperCard } from '@/screens/home/wallpaper-card';
+import { colors, radius, spacing, type } from '@/theme';
 
 export function Home() {
   const router = useRouter();
@@ -35,6 +36,14 @@ export function Home() {
       else next.add(id);
       return next;
     });
+  }
+
+  function selectCategory(category: (typeof categories)[number]) {
+    if (category === 'Pokémon') {
+      router.push('/pokemon');
+      return;
+    }
+    setSelectedCategory(category);
   }
 
   return (
@@ -85,7 +94,7 @@ export function Home() {
               accessibilityRole="button"
               accessibilityState={{ selected: isSelected }}
               key={category}
-              onPress={() => setSelectedCategory(category)}
+              onPress={() => selectCategory(category)}
               style={({ pressed }) => [
                 styles.category,
                 isSelected && styles.categorySelected,
@@ -104,9 +113,13 @@ export function Home() {
           <WallpaperCard
             isFavorite={favorites.has(wallpaper.id)}
             key={wallpaper.id}
-            onOpen={() =>
-              Alert.alert(wallpaper.title, 'The full wallpaper preview will be implemented next.')
-            }
+            onOpen={() => {
+              if (wallpaper.category === 'Pokémon') {
+                router.push('/pokemon');
+                return;
+              }
+              Alert.alert(wallpaper.title, 'This anime module will be implemented next.');
+            }}
             onToggleFavorite={() => toggleFavorite(wallpaper.id)}
             wallpaper={wallpaper}
             width={cardWidth}
@@ -118,11 +131,19 @@ export function Home() {
 }
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: '#090B16' },
-  content: { gap: 24, paddingHorizontal: 20, paddingTop: 12, paddingBottom: 36 },
+  screen: { flex: 1, backgroundColor: colors.background },
+  content: {
+    width: '100%',
+    maxWidth: 720,
+    alignSelf: 'center',
+    gap: spacing.xxl,
+    paddingHorizontal: spacing.xl,
+    paddingTop: spacing.md,
+    paddingBottom: 36,
+  },
   header: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
-  brand: { color: '#FFFFFF', fontSize: 34, fontWeight: '900', letterSpacing: -1.5 },
-  brandAccent: { color: '#8B5CFF' },
+  brand: { ...type.largeTitle, letterSpacing: -1.5 },
+  brandAccent: { color: colors.accent },
   avatar: {
     width: 48,
     height: 48,
@@ -130,42 +151,42 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 2,
-    borderColor: '#825BFF',
-    backgroundColor: '#181D38',
+    borderColor: colors.accent,
+    backgroundColor: colors.surfaceRaised,
   },
-  avatarText: { color: '#B7A4FF', fontWeight: '800' },
+  avatarText: { color: colors.textMuted, fontWeight: '800' },
   search: {
     minHeight: 58,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 12,
+    gap: spacing.md,
     paddingHorizontal: 18,
     borderWidth: 1,
-    borderColor: '#343B63',
-    borderRadius: 20,
+    borderColor: colors.border,
+    borderRadius: radius.lg,
     borderCurve: 'continuous',
-    backgroundColor: '#11162A',
+    backgroundColor: colors.surface,
   },
-  searchPressed: { borderColor: '#7C5CFF', backgroundColor: '#151B33' },
-  searchIcon: { color: '#9EA9CA', fontSize: 30, lineHeight: 32 },
-  searchText: { color: '#9EA9CA', fontSize: 16, flex: 1 },
+  searchPressed: { borderColor: colors.accent, backgroundColor: colors.surfaceRaised },
+  searchIcon: { color: colors.textMuted, fontSize: 30, lineHeight: 32 },
+  searchText: { ...type.body, color: colors.textMuted, flex: 1 },
   sectionHeading: { flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between' },
   eyebrow: { color: '#7558E7', fontSize: 11, fontWeight: '800', letterSpacing: 1.8 },
-  heading: { color: '#FFFFFF', fontSize: 25, fontWeight: '800', letterSpacing: -0.5 },
-  count: { color: '#6F7A9E', fontSize: 12, paddingBottom: 3 },
+  heading: { ...type.title, letterSpacing: -0.5 },
+  count: { ...type.caption, paddingBottom: 3 },
   categories: { gap: 10, paddingRight: 20 },
   category: {
     minHeight: 44,
     justifyContent: 'center',
     paddingHorizontal: 20,
     borderWidth: 1,
-    borderColor: '#343B63',
-    borderRadius: 22,
-    backgroundColor: '#0D1121',
+    borderColor: colors.border,
+    borderRadius: radius.full,
+    backgroundColor: colors.surface,
   },
-  categorySelected: { borderColor: '#8B6AFF', backgroundColor: '#704CF4' },
+  categorySelected: { borderColor: colors.accent, backgroundColor: colors.accent },
   categoryPressed: { opacity: 0.78 },
-  categoryText: { color: '#A6AFCC', fontSize: 15, fontWeight: '600' },
-  categoryTextSelected: { color: '#FFFFFF' },
-  grid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', gap: 12 },
+  categoryText: { ...type.subhead, fontSize: 15, fontWeight: '600' },
+  categoryTextSelected: { color: colors.text },
+  grid: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.md },
 });

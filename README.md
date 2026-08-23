@@ -19,6 +19,9 @@ Scan the QR code with Expo Go, or press `a` for Android and `w` for web.
 - Search navigation.
 - Native Home, Explore, Favorites, and Settings tabs.
 - Placeholder screens ready for the next development phase.
+- Searchable Pokédex selector with region filters and cached Pokémon sprites.
+- Pokémon-specific wallpaper galleries with mood filters.
+- Wallpaper preview with lock/home selection, favorite, download, share, and apply actions.
 
 ## Project structure
 
@@ -27,6 +30,7 @@ src/app/          Expo Router routes
 src/components/   Shared interface components
 src/data/         Sample wallpaper data
 src/screens/      Screen implementations
+src/theme/        Shared visual design tokens
 assets/           App icons and bundled media
 design/           Product mockups
 docs/             Product and UX documentation
