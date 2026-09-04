@@ -1,4 +1,5 @@
 import { useRouter } from 'expo-router';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useMemo, useState } from 'react';
 import {
   Alert,
@@ -16,11 +17,13 @@ import { colors, radius, spacing, type } from '@/theme';
 
 export function Home() {
   const router = useRouter();
+  const insets = useSafeAreaInsets();
   const { width } = useWindowDimensions();
   const [selectedCategory, setSelectedCategory] = useState<(typeof categories)[number]>('All');
   const [favorites, setFavorites] = useState<Set<string>>(() => new Set());
 
   const cardWidth = Math.max(146, Math.min(220, (width - 52) / 2));
+  const bottomContentInset = insets.bottom + 90;
   const visibleWallpapers = useMemo(
     () =>
       selectedCategory === 'All'
@@ -49,7 +52,8 @@ export function Home() {
   return (
     <ScrollView
       contentInsetAdjustmentBehavior="automatic"
-      contentContainerStyle={styles.content}
+      contentContainerStyle={[styles.content, { paddingBottom: bottomContentInset }]}
+      scrollIndicatorInsets={{ bottom: bottomContentInset }}
       showsVerticalScrollIndicator={false}
       style={styles.screen}>
       <View style={styles.header}>
@@ -142,7 +146,6 @@ const styles = StyleSheet.create({
     gap: spacing.xxl,
     paddingHorizontal: spacing.xl,
     paddingTop: spacing.md,
-    paddingBottom: 36,
   },
   header: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   brand: { ...type.largeTitle, letterSpacing: -1.5 },
