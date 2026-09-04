@@ -35,6 +35,9 @@ export function WallpaperCard({
         />
         <View style={styles.imageShade} />
         <View style={[styles.label, { backgroundColor: wallpaper.accent }]}>
+          <Text numberOfLines={1} style={styles.origin}>
+            {wallpaper.origin === 'China' ? 'CHINESE ANIMATION · 国漫' : 'JAPANESE ANIME'}
+          </Text>
           <Text numberOfLines={1} style={styles.title}>
             {wallpaper.title}
           </Text>
@@ -86,9 +89,17 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     left: 0,
-    minHeight: 58,
+    minHeight: 70,
     justifyContent: 'center',
+    gap: 2,
     paddingHorizontal: spacing.md,
+  },
+  origin: {
+    color: 'rgba(255, 255, 255, 0.76)',
+    fontSize: 9,
+    fontWeight: '800',
+    letterSpacing: 0.8,
+    textAlign: 'center',
   },
   title: { ...type.subhead, color: colors.text, fontSize: 15, fontWeight: '800', textAlign: 'center' },
 });

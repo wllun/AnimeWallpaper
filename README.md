@@ -14,7 +14,8 @@ Scan the QR code with Expo Go, or press `a` for Android and `w` for web.
 ## Current sample
 
 - Responsive anime wallpaper home feed.
-- Pokémon, Digimon, Bleach, and Naruto category filters.
+- Japanese anime collections: Pokémon, Digimon, Yu-Gi-Oh!, and Bleach.
+- Chinese animation (国漫) collections: 仙逆, 完美世界, 百炼成神, and 吞噬星空.
 - Interactive favorite toggles.
 - Search navigation.
 - Native Home, Explore, Favorites, and Settings tabs.

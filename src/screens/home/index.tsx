@@ -66,7 +66,7 @@ export function Home() {
         onPress={() => router.push('/explore')}
         style={({ pressed }) => [styles.search, pressed && styles.searchPressed]}>
         <Text style={styles.searchIcon}>⌕</Text>
-        <Text style={styles.searchText}>Search anime or characters</Text>
+        <Text style={styles.searchText}>Search anime, donghua, or characters</Text>
       </Pressable>
 
       <View style={styles.sectionHeading}>
@@ -75,7 +75,7 @@ export function Home() {
             COLLECTIONS
           </Text>
           <Text selectable style={styles.heading}>
-            Choose your anime
+            Choose your series
           </Text>
         </View>
         <Text selectable style={styles.count}>
@@ -118,7 +118,10 @@ export function Home() {
                 router.push('/pokemon');
                 return;
               }
-              Alert.alert(wallpaper.title, 'This anime module will be implemented next.');
+              Alert.alert(
+                wallpaper.title,
+                `This ${wallpaper.origin === 'China' ? 'Chinese animation' : 'Japanese anime'} module will be implemented next.`,
+              );
             }}
             onToggleFavorite={() => toggleFavorite(wallpaper.id)}
             wallpaper={wallpaper}
