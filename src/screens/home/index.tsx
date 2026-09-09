@@ -1,6 +1,6 @@
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import {
   Alert,
   Pressable,
@@ -11,26 +11,26 @@ import {
   View,
 } from 'react-native';
 
-import { categories, wallpapers } from '@/data/wallpapers';
+import { wallpapers } from '@/data/wallpapers';
 import { WallpaperCard } from '@/screens/home/wallpaper-card';
 import { colors, radius, spacing, type } from '@/theme';
+
+const MAX_CONTENT_WIDTH = 720;
+const THREE_COLUMN_BREAKPOINT = 640;
 
 export function Home() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { width } = useWindowDimensions();
-  const [selectedCategory, setSelectedCategory] = useState<(typeof categories)[number]>('All');
   const [favorites, setFavorites] = useState<Set<string>>(() => new Set());
 
-  const cardWidth = Math.max(146, Math.min(220, (width - 52) / 2));
-  const bottomContentInset = insets.bottom + 90;
-  const visibleWallpapers = useMemo(
-    () =>
-      selectedCategory === 'All'
-        ? wallpapers
-        : wallpapers.filter((wallpaper) => wallpaper.category === selectedCategory),
-    [selectedCategory],
+  const columnCount = width >= THREE_COLUMN_BREAKPOINT ? 3 : 2;
+  const contentWidth = Math.min(width, MAX_CONTENT_WIDTH) - spacing.xl * 2;
+  const cardWidth = Math.min(
+    220,
+    (contentWidth - spacing.md * (columnCount - 1)) / columnCount,
   );
+  const bottomContentInset = insets.bottom + 90;
 
   function toggleFavorite(id: string) {
     setFavorites((current) => {
@@ -39,14 +39,6 @@ export function Home() {
       else next.add(id);
       return next;
     });
-  }
-
-  function selectCategory(category: (typeof categories)[number]) {
-    if (category === 'Pokémon') {
-      router.push('/pokemon');
-      return;
-    }
-    setSelectedCategory(category);
   }
 
   return (
@@ -73,47 +65,8 @@ export function Home() {
         <Text style={styles.searchText}>Search anime, donghua, or characters</Text>
       </Pressable>
 
-      <View style={styles.sectionHeading}>
-        <View>
-          <Text selectable style={styles.eyebrow}>
-            COLLECTIONS
-          </Text>
-          <Text selectable style={styles.heading}>
-            Choose your series
-          </Text>
-        </View>
-        <Text selectable style={styles.count}>
-          {visibleWallpapers.length} wallpapers
-        </Text>
-      </View>
-
-      <ScrollView
-        horizontal
-        contentContainerStyle={styles.categories}
-        showsHorizontalScrollIndicator={false}>
-        {categories.map((category) => {
-          const isSelected = category === selectedCategory;
-          return (
-            <Pressable
-              accessibilityRole="button"
-              accessibilityState={{ selected: isSelected }}
-              key={category}
-              onPress={() => selectCategory(category)}
-              style={({ pressed }) => [
-                styles.category,
-                isSelected && styles.categorySelected,
-                pressed && styles.categoryPressed,
-              ]}>
-              <Text style={[styles.categoryText, isSelected && styles.categoryTextSelected]}>
-                {category}
-              </Text>
-            </Pressable>
-          );
-        })}
-      </ScrollView>
-
       <View style={styles.grid}>
-        {visibleWallpapers.map((wallpaper) => (
+        {wallpapers.map((wallpaper) => (
           <WallpaperCard
             isFavorite={favorites.has(wallpaper.id)}
             key={wallpaper.id}
@@ -176,23 +129,10 @@ const styles = StyleSheet.create({
   searchPressed: { borderColor: colors.accent, backgroundColor: colors.surfaceRaised },
   searchIcon: { color: colors.textMuted, fontSize: 30, lineHeight: 32 },
   searchText: { ...type.body, color: colors.textMuted, flex: 1 },
-  sectionHeading: { flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between' },
-  eyebrow: { color: '#7558E7', fontSize: 11, fontWeight: '800', letterSpacing: 1.8 },
-  heading: { ...type.title, letterSpacing: -0.5 },
-  count: { ...type.caption, paddingBottom: 3 },
-  categories: { gap: 10, paddingRight: 20 },
-  category: {
-    minHeight: 44,
+  grid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
     justifyContent: 'center',
-    paddingHorizontal: 20,
-    borderWidth: 1,
-    borderColor: colors.border,
-    borderRadius: radius.full,
-    backgroundColor: colors.surface,
+    gap: spacing.md,
   },
-  categorySelected: { borderColor: colors.accent, backgroundColor: colors.accent },
-  categoryPressed: { opacity: 0.78 },
-  categoryText: { ...type.subhead, fontSize: 15, fontWeight: '600' },
-  categoryTextSelected: { color: colors.text },
-  grid: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.md },
 });

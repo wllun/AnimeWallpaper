@@ -1,5 +1,4 @@
-export const categories = [
-  'All',
+export const catalogTitles = [
   'Pokémon',
   'Digimon',
   'Yu-Gi-Oh!',
@@ -10,7 +9,7 @@ export const categories = [
   '吞噬星空',
 ] as const;
 
-export type WallpaperCategory = Exclude<(typeof categories)[number], 'All'>;
+export type WallpaperCategory = (typeof catalogTitles)[number];
 export type AnimationOrigin = 'Japan' | 'China';
 
 export type Wallpaper = {
@@ -25,7 +24,7 @@ export type Wallpaper = {
 export const wallpapers: Wallpaper[] = [
   {
     id: 'electric-partners',
-    title: 'Electric Partners',
+    title: 'Pokémon',
     category: 'Pokémon',
     origin: 'Japan',
     imageUrl:
@@ -34,7 +33,7 @@ export const wallpapers: Wallpaper[] = [
   },
   {
     id: 'digital-adventure',
-    title: 'Digital Adventure',
+    title: 'Digimon',
     category: 'Digimon',
     origin: 'Japan',
     imageUrl:
@@ -43,7 +42,7 @@ export const wallpapers: Wallpaper[] = [
   },
   {
     id: 'heart-of-the-cards',
-    title: 'Heart of the Cards',
+    title: 'Yu-Gi-Oh!',
     category: 'Yu-Gi-Oh!',
     origin: 'Japan',
     imageUrl:
@@ -52,7 +51,7 @@ export const wallpapers: Wallpaper[] = [
   },
   {
     id: 'soul-guardian',
-    title: 'Soul Guardian',
+    title: 'Bleach',
     category: 'Bleach',
     origin: 'Japan',
     imageUrl:
