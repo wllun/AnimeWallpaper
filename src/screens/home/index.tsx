@@ -1,6 +1,6 @@
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import {
   Alert,
   Pressable,
@@ -17,11 +17,19 @@ import { colors, radius, spacing, type } from '@/theme';
 
 const MAX_CONTENT_WIDTH = 720;
 const THREE_COLUMN_BREAKPOINT = 640;
+const originTabs = [
+  { label: 'All', value: 'All' },
+  { label: 'Japanese', value: 'Japan' },
+  { label: 'Chinese', value: 'China' },
+] as const;
+
+type OriginFilter = (typeof originTabs)[number]['value'];
 
 export function Home() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { width } = useWindowDimensions();
+  const [originFilter, setOriginFilter] = useState<OriginFilter>('All');
   const [favorites, setFavorites] = useState<Set<string>>(() => new Set());
 
   const columnCount = width >= THREE_COLUMN_BREAKPOINT ? 3 : 2;
@@ -31,6 +39,13 @@ export function Home() {
     (contentWidth - spacing.md * (columnCount - 1)) / columnCount,
   );
   const bottomContentInset = insets.bottom + 90;
+  const visibleWallpapers = useMemo(
+    () =>
+      originFilter === 'All'
+        ? wallpapers
+        : wallpapers.filter((wallpaper) => wallpaper.origin === originFilter),
+    [originFilter],
+  );
 
   function toggleFavorite(id: string) {
     setFavorites((current) => {
@@ -65,8 +80,31 @@ export function Home() {
         <Text style={styles.searchText}>Search anime, donghua, or characters</Text>
       </Pressable>
 
+      <View accessibilityLabel="Catalog origin" style={styles.originTabs}>
+        {originTabs.map((tab) => {
+          const isSelected = originFilter === tab.value;
+
+          return (
+            <Pressable
+              accessibilityRole="tab"
+              accessibilityState={{ selected: isSelected }}
+              key={tab.value}
+              onPress={() => setOriginFilter(tab.value)}
+              style={({ pressed }) => [
+                styles.originTab,
+                isSelected && styles.originTabSelected,
+                pressed && styles.originTabPressed,
+              ]}>
+              <Text style={[styles.originTabText, isSelected && styles.originTabTextSelected]}>
+                {tab.label}
+              </Text>
+            </Pressable>
+          );
+        })}
+      </View>
+
       <View style={styles.grid}>
-        {wallpapers.map((wallpaper) => (
+        {visibleWallpapers.map((wallpaper) => (
           <WallpaperCard
             isFavorite={favorites.has(wallpaper.id)}
             key={wallpaper.id}
@@ -129,6 +167,27 @@ const styles = StyleSheet.create({
   searchPressed: { borderColor: colors.accent, backgroundColor: colors.surfaceRaised },
   searchIcon: { color: colors.textMuted, fontSize: 30, lineHeight: 32 },
   searchText: { ...type.body, color: colors.textMuted, flex: 1 },
+  originTabs: {
+    flexDirection: 'row',
+    gap: spacing.xs,
+    padding: spacing.xs,
+    borderWidth: 1,
+    borderColor: colors.border,
+    borderRadius: radius.full,
+    backgroundColor: colors.surface,
+  },
+  originTab: {
+    minHeight: 44,
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: spacing.sm,
+    borderRadius: radius.full,
+  },
+  originTabSelected: { backgroundColor: colors.accent },
+  originTabPressed: { opacity: 0.78 },
+  originTabText: { ...type.subhead, fontSize: 14, fontWeight: '700' },
+  originTabTextSelected: { color: colors.text },
   grid: {
     flexDirection: 'row',
     flexWrap: 'wrap',

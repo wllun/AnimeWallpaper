@@ -7,6 +7,7 @@ export const catalogTitles = [
   '完美世界',
   '百炼成神',
   '吞噬星空',
+  '武庚纪',
 ] as const;
 
 export type WallpaperCategory = (typeof catalogTitles)[number];
@@ -93,5 +94,14 @@ export const wallpapers: Wallpaper[] = [
     imageUrl:
       'https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=900&q=85',
     accent: '#2563EB',
+  },
+  {
+    id: 'wu-geng-ji',
+    title: '武庚纪',
+    category: '武庚纪',
+    origin: 'China',
+    imageUrl:
+      'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=900&q=85',
+    accent: '#B91C1C',
   },
 ];
