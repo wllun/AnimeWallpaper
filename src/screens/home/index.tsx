@@ -11,6 +11,7 @@ import {
   View,
 } from 'react-native';
 
+import { findCharacterCatalogSeriesByTitle } from '@/data/character-catalog';
 import { wallpapers } from '@/data/wallpapers';
 import { WallpaperCard } from '@/screens/home/wallpaper-card';
 import { colors, radius, spacing, type } from '@/theme';
@@ -113,6 +114,16 @@ export function Home() {
                 router.push('/pokemon');
                 return;
               }
+
+              const series = findCharacterCatalogSeriesByTitle(wallpaper.category);
+              if (series) {
+                router.push({
+                  pathname: '/catalog/[seriesId]',
+                  params: { seriesId: series.id },
+                });
+                return;
+              }
+
               Alert.alert(
                 wallpaper.title,
                 `This ${wallpaper.origin === 'China' ? 'Chinese animation' : 'Japanese anime'} module will be implemented next.`,

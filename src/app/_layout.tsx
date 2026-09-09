@@ -37,6 +37,15 @@ export default function RootLayout() {
           name="pokemon/[pokemonId]/[wallpaperId]"
           options={{ headerShown: false }}
         />
+        <Stack.Screen name="catalog/[seriesId]/index" options={{ title: 'Characters' }} />
+        <Stack.Screen
+          name="catalog/[seriesId]/[characterId]/index"
+          options={{ title: 'Wallpapers' }}
+        />
+        <Stack.Screen
+          name="catalog/[seriesId]/[characterId]/[wallpaperId]"
+          options={{ headerShown: false }}
+        />
       </Stack>
     </ThemeProvider>
   );
