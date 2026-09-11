@@ -8,16 +8,18 @@ export const catalogTitles = [
   '百炼成神',
   '吞噬星空',
   '武庚纪',
+  '原神',
+  '鸣潮',
 ] as const;
 
 export type WallpaperCategory = (typeof catalogTitles)[number];
-export type AnimationOrigin = 'Japan' | 'China';
+export type CatalogOrigin = 'Japan' | 'China' | 'Game';
 
 export type Wallpaper = {
   id: string;
   title: string;
   category: WallpaperCategory;
-  origin: AnimationOrigin;
+  origin: CatalogOrigin;
   imageUrl: string;
   accent: string;
 };
@@ -103,5 +105,23 @@ export const wallpapers: Wallpaper[] = [
     imageUrl:
       'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=900&q=85',
     accent: '#B91C1C',
+  },
+  {
+    id: 'genshin-impact',
+    title: '原神',
+    category: '原神',
+    origin: 'Game',
+    imageUrl:
+      'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=900&q=85',
+    accent: '#7C3AED',
+  },
+  {
+    id: 'wuthering-waves',
+    title: '鸣潮',
+    category: '鸣潮',
+    origin: 'Game',
+    imageUrl:
+      'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=900&q=85',
+    accent: '#0F766E',
   },
 ];

@@ -48,6 +48,16 @@ Pokémon characters are managed separately in `docs/POKEMON_MODULE.md`.
 
 - [x] 武庚
 
+## Games
+
+### 原神
+
+- [ ] Add character name here
+
+### 鸣潮
+
+- [ ] Add character name here
+
 ## Adding Wallpapers
 
 If you also have wallpaper images, list them below the character using an indented item and provide the file path or source reference.

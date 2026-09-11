@@ -19,6 +19,13 @@ export function WallpaperCard({
   onOpen,
   onToggleFavorite,
 }: WallpaperCardProps) {
+  const originLabel =
+    wallpaper.origin === 'China'
+      ? 'CHINESE ANIMATION · 国漫'
+      : wallpaper.origin === 'Game'
+        ? 'GAME'
+        : 'JAPANESE ANIME';
+
   return (
     <View style={[styles.card, { width }]}>
       <Pressable
@@ -36,7 +43,7 @@ export function WallpaperCard({
         <View style={styles.imageShade} />
         <View style={[styles.label, { backgroundColor: wallpaper.accent }]}>
           <Text numberOfLines={1} style={styles.origin}>
-            {wallpaper.origin === 'China' ? 'CHINESE ANIMATION · 国漫' : 'JAPANESE ANIME'}
+            {originLabel}
           </Text>
           <Text numberOfLines={1} style={styles.title}>
             {wallpaper.title}

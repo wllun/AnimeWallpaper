@@ -22,6 +22,7 @@ const originTabs = [
   { label: 'All', value: 'All' },
   { label: 'Japanese', value: 'Japan' },
   { label: 'Chinese', value: 'China' },
+  { label: 'Games', value: 'Game' },
 ] as const;
 
 type OriginFilter = (typeof originTabs)[number]['value'];
@@ -78,7 +79,7 @@ export function Home() {
         onPress={() => router.push('/explore')}
         style={({ pressed }) => [styles.search, pressed && styles.searchPressed]}>
         <Text style={styles.searchIcon}>⌕</Text>
-        <Text style={styles.searchText}>Search anime, donghua, or characters</Text>
+        <Text style={styles.searchText}>Search anime, donghua, games, or characters</Text>
       </Pressable>
 
       <View accessibilityLabel="Catalog origin" style={styles.originTabs}>
@@ -126,7 +127,13 @@ export function Home() {
 
               Alert.alert(
                 wallpaper.title,
-                `This ${wallpaper.origin === 'China' ? 'Chinese animation' : 'Japanese anime'} module will be implemented next.`,
+                `This ${
+                  wallpaper.origin === 'China'
+                    ? 'Chinese animation'
+                    : wallpaper.origin === 'Game'
+                      ? 'game'
+                      : 'Japanese anime'
+                } module will be implemented next.`,
               );
             }}
             onToggleFavorite={() => toggleFavorite(wallpaper.id)}
